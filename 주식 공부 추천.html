@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>꿀비의 주식 공부 리소스 모음</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --honey: #FFB800;
+    --honey-light: #FFF8E1;
+    --honey-dark: #E6A000;
+    --black: #1A1A1A;
+    --gray: #666;
+    --light: #F9F9F9;
+    --white: #fff;
+  }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--white); color: var(--black); }
+
+  .hero { background: var(--black); padding: 72px 24px 64px; text-align: center; }
+  .hero-badge { display: inline-block; background: var(--honey); color: var(--black); font-size: 12px; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(26px, 5vw, 44px); font-weight: 900; color: var(--white); line-height: 1.25; margin-bottom: 14px; }
+  .hero h1 span { color: var(--honey); }
+  .hero p { font-size: 14px; color: #aaa; }
+
+  .tabs { display: flex; justify-content: center; gap: 10px; padding: 32px 24px 0; flex-wrap: wrap; }
+  .tab-btn { background: var(--light); border: 2px solid transparent; border-radius: 12px; padding: 12px 24px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all 0.2s; color: var(--gray); }
+  .tab-btn:hover { border-color: var(--honey); color: var(--black); }
+  .tab-btn.active { background: var(--honey); color: var(--black); border-color: var(--honey); }
+
+  .tab-content { display: none; padding: 40px 24px 60px; max-width: 800px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  .section-title { font-size: clamp(20px, 3.5vw, 28px); font-weight: 900; margin-bottom: 8px; }
+  .section-desc { font-size: 14px; color: var(--gray); margin-bottom: 32px; }
+
+  .resource { background: var(--light); border-radius: 16px; margin-bottom: 16px; overflow: hidden; border: 1.5px solid #eee; transition: border-color 0.2s; }
+  .resource:hover { border-color: var(--honey); }
+  .resource-header { display: flex; align-items: center; gap: 16px; padding: 20px; cursor: pointer; user-select: none; }
+  .resource-icon { width: 48px; height: 48px; background: var(--honey-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .resource-meta { flex: 1; }
+  .resource-tag { font-size: 10px; font-weight: 700; color: var(--honey-dark); background: var(--honey-light); padding: 2px 8px; border-radius: 6px; display: inline-block; margin-bottom: 4px; }
+  .resource-name { font-size: 16px; font-weight: 700; }
+  .resource-short { font-size: 12px; color: var(--gray); margin-top: 2px; }
+  .resource-toggle { font-size: 18px; color: var(--gray); transition: transform 0.3s; flex-shrink: 0; }
+  .resource.open .resource-toggle { transform: rotate(180deg); }
+  .resource-detail { display: none; padding: 0 20px 24px; border-top: 1px solid #eee; }
+  .resource.open .resource-detail { display: block; }
+
+  .detail-section { margin-top: 20px; }
+  .detail-section h4 { font-size: 13px; font-weight: 700; color: var(--honey-dark); margin-bottom: 10px; }
+  .detail-section p { font-size: 13px; color: var(--gray); line-height: 1.8; }
+  .step-list { list-style: none; }
+  .step-list li { font-size: 13px; color: var(--gray); padding: 8px 0; border-bottom: 1px solid #eee; display: flex; gap: 10px; line-height: 1.6; }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num { width: 22px; height: 22px; background: var(--honey); color: var(--black); border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .tip-box { background: var(--honey-light); border-left: 3px solid var(--honey); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; color: var(--black); line-height: 1.7; }
+  .link-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 700; padding: 10px 18px; border-radius: 10px; text-decoration: none; margin-top: 16px; transition: opacity 0.2s; }
+  .link-btn:hover { opacity: 0.8; }
+  .link-btn.honey { background: var(--honey); color: var(--black); }
+
+  .resource.ggulbee { border-color: var(--honey); }
+  .resource.ggulbee .resource-icon { background: var(--honey); }
+
+  .coming-soon { background: var(--black); padding: 64px 24px; text-align: center; }
+  .coming-soon h2 { font-size: clamp(22px, 4vw, 32px); font-weight: 900; color: var(--white); margin-bottom: 12px; line-height: 1.35; }
+  .coming-soon h2 span { color: var(--honey); }
+  .coming-soon .desc-box { background: #2a2a2a; border-radius: 14px; padding: 20px 24px; margin: 20px auto 28px; max-width: 480px; text-align: left; }
+  .coming-soon .desc-box p { font-size: 14px; color: #ccc; line-height: 1.8; }
+  .coming-soon .desc-box p span { color: var(--honey); font-weight: 700; }
+  .coming-soon > p { font-size: 14px; color: #aaa; margin-bottom: 20px; }
+
+  .kakao-btn { display: inline-flex; align-items: center; gap: 10px; background: #FEE500; color: var(--black); font-size: 15px; font-weight: 700; padding: 16px 32px; border-radius: 14px; text-decoration: none; transition: transform 0.2s; font-family: 'Noto Sans KR', sans-serif; }
+  .kakao-btn:hover { transform: scale(1.03); }
+  .kakao-sub { font-size: 12px; color: #888; margin-top: 12px; }
+
+  footer { padding: 24px; text-align: center; font-size: 12px; color: #bbb; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-badge">🍯 꿀비 picks</div>
+  <h1>주식 처음 시작할 때<br><span>이것만 보면 됩니다</span></h1>
+  <p>꿀비가 직접 고른 유튜브 · 사이트 · 책 모음</p>
+</section>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('youtube', this)">📺 유튜브</button>
+  <button class="tab-btn" onclick="switchTab('sites', this)">🖥️ 사이트</button>
+  <button class="tab-btn" onclick="switchTab('books', this)">📚 책</button>
+</div>
+
+<div class="tab-content active" id="tab-youtube">
+  <div class="section-title">📺 추천 유튜브 채널</div>
+  <div class="section-desc">주식 공부, 영상으로 시작하면 훨씬 쉬워요. 이 채널들만 구독해두세요.</div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">📰</div>
+      <div class="resource-meta">
+        <div class="resource-tag">시황·뉴스</div>
+        <div class="resource-name">한경코리아마켓</div>
+        <div class="resource-short">매일 아침 모닝루틴으로 보기</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 이런 분께 추천</h4><p>경제 뉴스가 어렵게 느껴지는 분, 매일 10~15분 투자해서 시황을 파악하고 싶은 분</p></div>
+      <div class="detail-section"><h4>✅ 이렇게 활용하세요</h4>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>아침에 일어나자마자 가장 먼저 켜는 채널로 설정하기</li>
+          <li><span class="step-num">2</span>매일 올라오는 모닝 시황 영상 출퇴근길에 듣기 (라디오처럼)</li>
+          <li><span class="step-num">3</span>모르는 용어 나오면 일시정지 후 검색 — 이 반복이 실력이 돼요</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 처음엔 다 이해 안 돼도 괜찮아요. 꾸준히 듣다 보면 귀에 익고, 어느 순간 흐름이 보이기 시작해요.</div>
+      <a href="https://www.youtube.com/@hk_koreamarket" target="_blank" class="link-btn">▶ 채널 바로가기</a>
+    </div>
+  </div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">🎙️</div>
+      <div class="resource-meta">
+        <div class="resource-tag">경제 흐름</div>
+        <div class="resource-name">슈카월드</div>
+        <div class="resource-short">어려운 경제를 재밌게</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 이런 분께 추천</h4><p>금리·환율·경제 뉴스가 내 주식이랑 무슨 상관인지 모르겠는 분</p></div>
+      <div class="detail-section"><h4>✅ 이렇게 활용하세요</h4>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>요즘 핫한 경제 이슈 관련 영상부터 클릭</li>
+          <li><span class="step-num">2</span>영상 보면서 "이게 주식에 어떤 영향을 주지?" 생각하는 습관 들이기</li>
+          <li><span class="step-num">3</span>댓글창도 꼭 읽어보기 — 다른 투자자들의 시각도 배울 수 있어요</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 구독자 300만의 이유가 있어요. 처음엔 그냥 드라마 보듯 봐도 돼요.</div>
+      <a href="https://www.youtube.com/@syukaworld" target="_blank" class="link-btn">▶ 채널 바로가기</a>
+    </div>
+  </div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">🐻</div>
+      <div class="resource-meta">
+        <div class="resource-tag">금융상품</div>
+        <div class="resource-name">박곰희TV</div>
+        <div class="resource-short">ETF·연금저축 쉽게 배우기</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 이런 분께 추천</h4><p>ETF, ISA, 연금저축펀드가 뭔지 모르는 분. 금융상품 개념 잡고 싶은 분</p></div>
+      <div class="detail-section"><h4>✅ 이렇게 활용하세요</h4>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>재생목록에서 'ETF 기초' 또는 'ISA' 검색해서 정주행</li>
+          <li><span class="step-num">2</span>영상 대부분 10분 내외라 부담 없이 볼 수 있어요</li>
+          <li><span class="step-num">3</span>실제 증권사 앱 켜서 따라하는 영상이 많으니 같이 열어두고 보기</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 주식 종목 고르기 전에 ETF부터 시작하고 싶다면 박곰희TV가 교과서예요.</div>
+      <a href="https://www.youtube.com/@gomhee" target="_blank" class="link-btn">▶ 채널 바로가기</a>
+    </div>
+  </div>
+
+  <div class="resource ggulbee" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">🍯</div>
+      <div class="resource-meta">
+        <div class="resource-tag">재테크툰 · 꿀비 picks</div>
+        <div class="resource-name">꿀비 ggulbees</div>
+        <div class="resource-short">초보 투자자를 위한 재테크툰</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 이런 분께 추천</h4><p>어려운 주식·재테크 개념을 쉽고 재밌게 배우고 싶은 분</p></div>
+      <div class="detail-section"><h4>✅ 이렇게 활용하세요</h4>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>구독 눌러두고 새 영상 올라올 때마다 확인하기</li>
+          <li><span class="step-num">2</span>복잡한 재테크 개념을 웹툰처럼 쉽게 설명해드려요</li>
+          <li><span class="step-num">3</span>곧 왕초보 전용 전자책 + 무료 챌린지도 출시 예정!</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 아직 영상이 많진 않지만 앞으로 꾸준히 올릴 예정이에요. 지금 구독해두면 제일 먼저 알림 받을 수 있어요 🍯</div>
+      <a href="https://www.youtube.com/@ggulbees" target="_blank" class="link-btn honey">🍯 꿀비 채널 구독하기</a>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-sites">
+  <div class="section-title">🖥️ 자주 열어두는 사이트</div>
+  <div class="section-desc">북마크 해두면 투자 실력이 올라가는 사이트예요.</div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">🇰🇷</div>
+      <div class="resource-meta">
+        <div class="resource-tag">국내주식</div>
+        <div class="resource-name">네이버 증권</div>
+        <div class="resource-short">국내 투자자 필수 사이트</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 무엇을 볼 수 있나요?</h4><p>종목 주가, 재무제표, 공시, 뉴스, 증권사 리포트까지 한번에 확인 가능해요.</p></div>
+      <div class="detail-section"><h4>✅ 이렇게 활용하세요</h4>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>네이버 검색창에 종목명 검색 → 바로 주가 확인 가능</li>
+          <li><span class="step-num">2</span>종목 페이지 → '재무' 탭 → 매출·영업이익 확인 (회사 건강 체크)</li>
+          <li><span class="step-num">3</span>'공시' 탭 → 회사가 공식으로 발표한 소식 확인</li>
+          <li><span class="step-num">4</span>홈 → 국내증시/해외증시 탭에서 시장 전체 흐름 파악</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 처음엔 그냥 내가 아는 회사 이름 검색해서 주가 보는 것부터 시작해요.</div>
+      <a href="https://finance.naver.com" target="_blank" class="link-btn">🔗 사이트 바로가기</a>
+    </div>
+  </div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">🌍</div>
+      <div class="resource-meta">
+        <div class="resource-tag">미국주식·환율</div>
+        <div class="resource-name">인베스팅닷컴</div>
+        <div class="resource-short">해외 투자자 필수템</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 무엇을 볼 수 있나요?</h4><p>미국 주가, 환율, 금리, 원자재 가격 실시간 확인. 경제 캘린더 기능이 특히 유용해요.</p></div>
+      <div class="detail-section"><h4>✅ 이렇게 활용하세요</h4>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>상단 검색창에 종목명 또는 티커(예: AAPL) 입력해서 검색</li>
+          <li><span class="step-num">2</span>'경제 캘린더' 탭 → 이번 주 주요 경제 지표 발표 일정 확인</li>
+          <li><span class="step-num">3</span>앱 설치 후 관심 종목 알림 설정하면 더 편리해요</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 FOMC(미국 금리 결정) 날짜는 경제 캘린더에서 꼭 확인해두세요. 이날 시장이 크게 움직여요.</div>
+      <a href="https://kr.investing.com" target="_blank" class="link-btn">🔗 사이트 바로가기</a>
+    </div>
+  </div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">📊</div>
+      <div class="resource-meta">
+        <div class="resource-tag">미국주식 분석</div>
+        <div class="resource-name">핀비즈 (Finviz)</div>
+        <div class="resource-short">미국 시장 한눈에 보기</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 무엇을 볼 수 있나요?</h4><p>미국 전체 주식 시장을 색깔로 시각화한 히트맵, 섹터별 등락 한눈에 파악 가능해요.</p></div>
+      <div class="detail-section"><h4>✅ 이렇게 활용하세요</h4>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>finviz.com 접속 → 상단 'Maps' 클릭</li>
+          <li><span class="step-num">2</span>초록색(상승) 많으면 상승장, 빨간색(하락) 많으면 하락장</li>
+          <li><span class="step-num">3</span>AI, 반도체 등 관심 섹터 흐름 매일 30초만 봐도 파악 완료</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 영어 사이트지만 히트맵은 색깔만 보면 돼서 진입장벽이 낮아요!</div>
+      <a href="https://finviz.com/map.ashx" target="_blank" class="link-btn">🔗 사이트 바로가기</a>
+    </div>
+  </div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">⚡</div>
+      <div class="resource-meta">
+        <div class="resource-tag">미국주식 실시간 뉴스</div>
+        <div class="resource-name">세이브티커 (SaveTicker)</div>
+        <div class="resource-short">미국 증시 뉴스 한국어로 빠르게</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 무엇을 볼 수 있나요?</h4><p>나스닥·S&amp;P500·다우존스 등 미국 주식시장 뉴스를 실시간으로 한국어로 확인할 수 있어요.</p></div>
+      <div class="detail-section"><h4>✅ 이렇게 활용하세요</h4>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>saveticker.com/news 접속 → 오늘 미국 증시 주요 뉴스 확인</li>
+          <li><span class="step-num">2</span>앱 설치하면 관심 기업·키워드 맞춤 알림 설정 가능</li>
+          <li><span class="step-num">3</span>'캘린더' 탭에서 이번 주 경제 지표 발표 일정 미리 체크</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 영어 뉴스 직접 찾기 어려운 분들에게 딱이에요. 한국어로 미국 증시 뉴스를 빠르게 볼 수 있어요.</div>
+      <a href="https://saveticker.com/news" target="_blank" class="link-btn">🔗 사이트 바로가기</a>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-books">
+  <div class="section-title">📚 꿀비 추천 책 3권</div>
+  <div class="section-desc">이 순서대로 읽으면 왕초보에서 중수로 레벨업 돼요.</div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">📗</div>
+      <div class="resource-meta">
+        <div class="resource-tag">왕초보 필독 · 1순위</div>
+        <div class="resource-name">EBS 다큐프라임 자본주의</div>
+        <div class="resource-short">주식 전에 돈의 원리부터</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 이런 분께 추천</h4><p>"돈이 뭔지, 왜 투자해야 하는지"부터 이해하고 싶은 분</p></div>
+      <div class="detail-section"><h4>📖 이 책에서 배우는 것</h4>
+        <ul class="step-list">
+          <li><span class="step-num">✓</span>돈이 어떻게 만들어지고 움직이는지 — 자본주의의 작동 원리</li>
+          <li><span class="step-num">✓</span>왜 월급만으로는 부족한지 — 인플레이션과 자산의 관계</li>
+          <li><span class="step-num">✓</span>금융 시스템이 나한테 어떤 영향을 주는지</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 EBS 다큐를 책으로 엮은 거라 읽기 쉬워요. 주식 책 읽기 전에 이 책 먼저 읽으면 동기부여가 확실해져요.</div>
+    </div>
+  </div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">📘</div>
+      <div class="resource-meta">
+        <div class="resource-tag">기초 입문 · 2순위</div>
+        <div class="resource-name">주식투자 무작정 따라하기</div>
+        <div class="resource-short">100만 왕초보가 감동한 입문서</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 이런 분께 추천</h4><p>계좌 개설도 안 해본 진짜 왕초보. 어디서부터 시작해야 할지 모르겠는 분.</p></div>
+      <div class="detail-section"><h4>📖 이 책에서 배우는 것</h4>
+        <ul class="step-list">
+          <li><span class="step-num">✓</span>증권 계좌 개설 방법부터 첫 매수까지 단계별 설명</li>
+          <li><span class="step-num">✓</span>주가, 시가총액, PER 등 기본 용어 완전 정복</li>
+          <li><span class="step-num">✓</span>언제 사고 언제 팔아야 하는지 — 기초 원칙</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 두꺼워 보여도 그림이 많아서 생각보다 술술 읽혀요.</div>
+    </div>
+  </div>
+
+  <div class="resource" onclick="toggleResource(this)">
+    <div class="resource-header">
+      <div class="resource-icon">📙</div>
+      <div class="resource-meta">
+        <div class="resource-tag">원리 이해 · 3순위</div>
+        <div class="resource-name">주식투자 처음공부</div>
+        <div class="resource-short">감이 아닌 원리로 투자하기</div>
+      </div>
+      <div class="resource-toggle">▼</div>
+    </div>
+    <div class="resource-detail">
+      <div class="detail-section"><h4>📌 이런 분께 추천</h4><p>주식을 좀 해봤는데 왜 오르고 내리는지 원리가 모르겠는 분.</p></div>
+      <div class="detail-section"><h4>📖 이 책에서 배우는 것</h4>
+        <ul class="step-list">
+          <li><span class="step-num">✓</span>시장이 움직이는 구조와 원리</li>
+          <li><span class="step-num">✓</span>좋은 기업을 고르는 기준 — 재무제표 읽는 법</li>
+          <li><span class="step-num">✓</span>변동성에 흔들리지 않는 투자 마인드</li>
+        </ul>
+      </div>
+      <div class="tip-box">💡 앞의 두 권 다 읽고 나서 이 책 읽으면 퍼즐 맞추듯 이해가 돼요.</div>
+    </div>
+  </div>
+</div>
+
+<section class="coming-soon">
+  <h2>왕초보도 따라하는<br><span>꿀비의 주식 전자책 + 무료 챌린지</span><br>곧 출시됩니다 🍯</h2>
+  <div class="desc-box">
+    <p>주식 책은 참 많지만, <span>계좌 개설부터 첫 매수까지 차근차근 떠먹여주는</span> 책은 없더라고요.<br><br>
+    꿀비의 전자책은 초보도 언제든 시작할 수 있게, 아무것도 몰라도 따라올 수 있도록 만들었어요.<br>
+    무료 챌린지도 함께 진행할 예정이니 오픈 알림 꼭 받아두세요!</p>
+  </div>
+  <p>카카오 채널 추가하고 오픈 알림 가장 먼저 받기 👇</p>
+  <a href="http://pf.kakao.com/_eMabX" target="_blank" class="kakao-btn">💬 카카오 채널 추가하기</a>
+  <p class="kakao-sub">클릭하면 카카오 채널 추가 페이지로 이동해요</p>
+</section>
+
+<footer>© 2026 꿀비 · 본 자료는 투자 권유가 아닌 정보 제공 목적입니다</footer>
+
+<script>
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    btn.classList.add('active');
+  }
+  function toggleResource(el) {
+    el.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
